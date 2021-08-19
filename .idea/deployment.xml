@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="dlfdd@10.131.18.162:22 password" remoteFilesAllowedToDisappearOnAutoupload="false">
+    <serverData>
+      <paths name="dlfdd">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/qq_bot" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="dlfdd@10.131.18.162:22 password (1)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/dlfdd/qq_bot" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="dlfdd@10.131.18.162:22 password (4)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/dlfdd/qq_bot" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>

@@ -8,12 +8,12 @@ from bs4 import BeautifulSoup
 
 from qqRobot.utils.MySqlConn import MyPymysqlPool
 
-report = on_command("申请出校", priority=5)
+clock_report_ = on_command("打卡",priority=5)
 
-@report.handle()
+@clock_report_.handle()
 async def handle_first_receive(bot: Bot, event: Event, state: T_State):
     args = str(event.get_message()).strip()
-    res = "请输入   申请出校 学号#密码\n或者是 申请出校 学号#密码#事由#地点\n默认地点为双流，事由为学习"
+    res = "请输入   打卡 学号#密码\n或者是 申请出校 学号#密码#事由#地点\n默认地点为双流，事由为学习"
     if args:
         args = args.replace('#', '#')
         state['number'] = args.split('#')[0]
@@ -23,8 +23,8 @@ async def handle_first_receive(bot: Bot, event: Event, state: T_State):
         sql = "replace into student value(%s,%s,%s)"
         param = (event.get_user_id(), number, password)
         MyPymysqlPool().insert(sql=sql, param=param)
-        reason = "学习"
-        location = "双流"
+        reason = ""
+        location = ""
         if len(list(args.split('#'))) > 2:
             reason = args.split('#')[2]
             location = args.split('#')[3]
@@ -35,14 +35,13 @@ async def handle_first_receive(bot: Bot, event: Event, state: T_State):
         param = (event.get_user_id(),)
         stu = MyPymysqlPool().getOne(sql=sql, param=param)
         if stu is False:
-            res = "请输入   申请出校 学号#密码\n或者是 申请出校 学号#密码#地点#事由\n默认地点为双流，事由为学习\n首次输入需要输入学号密码 后面使用时只需要发送命令：申请出校"
+            res = "请输入   打卡 学号#密码 首次输入需要输入学号密码 后面使用时只需要发送命令：打卡"
         else:
-            reason = "学习"
-            location = "双流"
+            reason = ""
+            location = ""
             res = clock_report(bytes.decode(stu['number']), bytes.decode(stu['password']), location, reason)
         print(res)
-    await report.finish(str(res))
-
+    await clock_report_.finish(str(res))
 
 def clock_report(number, password, location, reason):
     flag = True
@@ -616,10 +615,10 @@ class ClockHandle:
                 "sF21650_N": "10",
                 "sF21912_1": str(location).encode("GBK"),
                 "sF21912_2": str(reason).encode("GBK"),
-                "sF21912_3": 1,
-                "sF21912_4": "06",
-                "sF21912_5": 3,
-                "sF21912_6": "23",
+                "sF21912_3": "",
+                "sF21912_4": "",
+                "sF21912_5": "",
+                "sF21912_6": "",
                 "sF21912_N": '6'
             }
             headerp = {
