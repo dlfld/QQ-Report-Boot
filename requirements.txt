@@ -1,0 +1,6 @@
+Scrapy==2.5.0
+requests==2.25.1
+beautifulsoup4==4.10.0
+dbutils==2.0.2
+nonebot2==2.0.0a15
+pymysql==1.0.2

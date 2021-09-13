@@ -8,40 +8,66 @@ from bs4 import BeautifulSoup
 
 from qqRobot.utils.MySqlConn import MyPymysqlPool
 
-clock_report_ = on_command("打卡",priority=5)
+clock_report_ = on_command("申请出校", priority=5)
+add_user = on_command("信息录入", priority=5)
 
+
+@add_user.handle()
+async def add_user_(bot: Bot, event: Event, state: T_State):
+    args = str(event.get_message()).strip()
+    state['number'] = args.split('#')[0]
+    state['password'] = args.split('#')[1]
+    number = state['number']
+    password = state['password']
+    sql = "replace into student value(%s,%s,%s)"
+    param = (event.get_user_id(), number, password)
+    MyPymysqlPool().insert(sql=sql, param=param)
+    await add_user.finish(str("用户添加成功！"))
+
+
+# @clock_report_.handle()
+# async def handle_first_receive(bot: Bot, event: Event, state: T_State):
+#     args = str(event.get_message()).strip()
+#     res = "请输入   打卡 学号#密码\n或者是 申请出校 学号#密码#事由#地点\n默认地点为双流，事由为学习"
+#     if args:
+#         args = args.replace('#', '#')
+#         state['number'] = args.split('#')[0]
+#         state['password'] = args.split('#')[1]
+#         number = state['number']
+#         password = state['password']
+#         sql = "replace into student value(%s,%s,%s)"
+#         param = (event.get_user_id(), number, password)
+#         MyPymysqlPool().insert(sql=sql, param=param)
+#         reason = ""
+#         location = ""
+#         if len(list(args.split('#'))) > 2:
+#             reason = args.split('#')[2]
+#             location = args.split('#')[3]
+#         res = clock_report(number, password, location, reason)
+#         print(res)
+#     else:
+#         sql = "select * from  student where qq = %s"
+#         param = (event.get_user_id(),)
+#         stu = MyPymysqlPool().getOne(sql=sql, param=param)
+#         if stu is False:
+#             res = "请输入   打卡 学号#密码 首次输入需要输入学号密码 后面使用时只需要发送命令：打卡"
+#         else:
+#             reason = ""
+#             location = ""
+#             res = clock_report(bytes.decode(stu['number']), bytes.decode(stu['password']), location, reason)
+#         print(res)
+#     await clock_report_.finish(str(res))
 @clock_report_.handle()
 async def handle_first_receive(bot: Bot, event: Event, state: T_State):
     args = str(event.get_message()).strip()
-    res = "请输入   打卡 学号#密码\n或者是 申请出校 学号#密码#事由#地点\n默认地点为双流，事由为学习"
-    if args:
-        args = args.replace('#', '#')
-        state['number'] = args.split('#')[0]
-        state['password'] = args.split('#')[1]
-        number = state['number']
-        password = state['password']
-        sql = "replace into student value(%s,%s,%s)"
-        param = (event.get_user_id(), number, password)
-        MyPymysqlPool().insert(sql=sql, param=param)
-        reason = ""
-        location = ""
-        if len(list(args.split('#'))) > 2:
-            reason = args.split('#')[2]
-            location = args.split('#')[3]
-        res = clock_report(number, password, location, reason)
-        print(res)
-    else:
-        sql = "select * from  student where qq = %s"
-        param = (event.get_user_id(),)
-        stu = MyPymysqlPool().getOne(sql=sql, param=param)
-        if stu is False:
-            res = "请输入   打卡 学号#密码 首次输入需要输入学号密码 后面使用时只需要发送命令：打卡"
-        else:
-            reason = ""
-            location = ""
-            res = clock_report(bytes.decode(stu['number']), bytes.decode(stu['password']), location, reason)
-        print(res)
-    await clock_report_.finish(str(res))
+    sql = "select * from  student where qq = %s"
+    param = (event.get_user_id(),)
+    stu = MyPymysqlPool().getOne(sql=sql, param=param)
+    # 如果没查到用户
+    if stu is False:
+        res = "你还未录入信息，请输入命令：\n信息录入 你的学号#密码  \neg： 信息录入 201708XXXX#asd123123a"
+    # else:
+
 
 def clock_report(number, password, location, reason):
     flag = True
