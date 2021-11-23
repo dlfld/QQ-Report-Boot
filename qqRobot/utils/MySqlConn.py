@@ -32,7 +32,7 @@ class MyPymysqlPool():
                               host='10.23.71.70',
                               port=3306,
                               user='root',
-                              passwd='123456',
+                              passwd='***',
                               db='clock',
                               use_unicode=False,
                               charset="utf8",
