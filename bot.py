@@ -24,9 +24,7 @@ nonebot.load_builtin_plugins()
 nonebot.load_from_toml("pyproject.toml")
 nonebot.load_plugins("qqRobot/plugins")
 # Modify some config / config depends on loaded configs
-# 
-# config = driver.config
-# do something...
+
 
 
 if __name__ == "__main__":

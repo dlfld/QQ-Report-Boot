@@ -11,3 +11,5 @@ async def handle_first_receive(bot: Bot, event: Event, state: T_State):
     # await bot.send(event,"[CQ:image,file=http://oss.youji999.top/images/2020/08/27/1598503009582813.jpg]")
     await weather.finish("👋")
 
+
+
